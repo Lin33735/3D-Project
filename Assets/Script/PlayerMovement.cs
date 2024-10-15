@@ -20,7 +20,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.AddForce(Dir(debugs) * speed);
+        Vector3 aimDir = transform.TransformDirection(Dir(debugs))  ;
+        rb.AddForce(aimDir * speed);
     }
 
     private void OnCollisionEnter()
@@ -35,9 +36,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (debugs)
         {
+            Vector3 temp = transform.TransformDirection(curDir);
             Debug.DrawRay(transform.position, rb.velocity, Color.yellow);
             Debug.Log("vector: " + curDir);
-            Debug.DrawRay(transform.position, curDir * 2f, Color.yellow);
+            Debug.DrawRay(transform.position, temp * 2f, Color.yellow);
         }
 
         return curDir;
