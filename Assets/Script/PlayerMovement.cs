@@ -1,47 +1,45 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.Jobs;
 
 public class PlayerMovement : MonoBehaviour
 {
     public bool debugs = true;
-    public float speed = 10;
+    float speed = 10f;
 
-    public bool isGrounded;
-
-    private Rigidbody rb;
+    Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 aimDir = transform.TransformDirection(Dir(debugs))  ;
-        rb.AddForce(aimDir * speed);
+        rb.AddForce(transform.TransformDirection(Dir(debugs) * speed));
     }
 
-    private void OnCollisionEnter()
-    {
-        isGrounded = true;
-    }
-    Vector3 Dir(bool debugs)
+    Vector3 Dir (bool debugs)
     {
         float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        Vector3 curDir = new Vector3(x, 0, z);
+        float y = Input.GetAxis("Vertical");
+        Vector3 curDir = new Vector3(x, 0, y);
 
         if (debugs)
         {
-            Vector3 temp = transform.TransformDirection(curDir);
             Debug.DrawRay(transform.position, rb.velocity, Color.yellow);
-            Debug.Log("vector: " + curDir);
-            Debug.DrawRay(transform.position, temp * 2f, Color.yellow);
+            //Debug.Log("Vector: " + curDir);
+            Debug.DrawRay(transform.position, transform.TransformDirection(curDir) * 2f, Color.yellow);
         }
-
         return curDir;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
