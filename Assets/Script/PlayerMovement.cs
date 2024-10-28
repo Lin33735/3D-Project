@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEditor.U2D;
 using UnityEngine;
@@ -8,18 +9,36 @@ using UnityEngine.Jobs;
 public class PlayerMovement : MonoBehaviour
 {
     public bool debugs = true;
-    float speed = 10f;
+    public float baseSpeed = 10f;
+    public float speed;
+
+    //Dash
+    private bool isDashing;
+    private Vector3 dashDir;
+    private float dashCooldown;
+    public float dashCooldownDur = 80f;
+    public float dashTime = 0.5f;
 
     Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        speed = baseSpeed;
     }
 
     void FixedUpdate()
     {
-        rb.AddForce(transform.TransformDirection(Dir(debugs) * speed));
+        //rb.AddForce(transform.TransformDirection(Dir(debugs) * speed));
+        Vector3 aimDir = (transform.TransformDirection(Dir(debugs)));
+        //rb.MovePosition(transform.position + aimDir * speed * Time.deltaTime);
+        rb.velocity = aimDir * speed;
+
+        if (dashCooldown > 0 )
+        {
+            dashCooldown--;
+        }
     }
 
     Vector3 Dir (bool debugs)
@@ -40,6 +59,29 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var dashInput = Input.GetButtonDown("Dash");
+
+        if (dashInput && dashCooldown <= 0)
+        {
+            isDashing = true;
+            dashDir = Dir(debugs);
+            StartCoroutine(StopDashing());
+        }
+
+        if (isDashing) {
+            speed = 80f;
+        }
+        else{
+            speed = baseSpeed;
+        }
+    }
+
+    private IEnumerator StopDashing()
+    {
+        yield return new WaitForSeconds(dashTime);
+        Debug.Log("is Dashing");
+        isDashing = false;
+        dashCooldown = dashCooldownDur;
+
     }
 }
