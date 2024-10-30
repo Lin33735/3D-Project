@@ -15,8 +15,9 @@ public class PlayerMovement : MonoBehaviour
     //Dash
     private bool isDashing;
     private Vector3 dashDir;
-    private float dashCooldown;
-    public float dashCooldownDur = 80f;
+    public float dashCooldown;
+    public float dashSpeed = 80f;
+    public float dashCooldownDur = 5f;
     public float dashTime = 0.5f;
 
     Rigidbody rb;
@@ -33,11 +34,11 @@ public class PlayerMovement : MonoBehaviour
         //rb.AddForce(transform.TransformDirection(Dir(debugs) * speed));
         Vector3 aimDir = (transform.TransformDirection(Dir(debugs)));
         //rb.MovePosition(transform.position + aimDir * speed * Time.deltaTime);
-        rb.velocity = aimDir * speed;
+        rb.velocity = new Vector3(aimDir.x * speed, rb.velocity.y, aimDir.z * speed);
 
         if (dashCooldown > 0 )
         {
-            dashCooldown--;
+            dashCooldown -= Time.fixedDeltaTime;
         }
     }
 
@@ -69,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (isDashing) {
-            speed = 80f;
+            speed = dashSpeed;
         }
         else{
             speed = baseSpeed;
@@ -79,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator StopDashing()
     {
         yield return new WaitForSeconds(dashTime);
-        Debug.Log("is Dashing");
+        Debug.Log("Stopped Dashing");
         isDashing = false;
         dashCooldown = dashCooldownDur;
 
