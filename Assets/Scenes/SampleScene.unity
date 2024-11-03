@@ -452,7 +452,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 36af1b021d32cf84689a9d4b57381723, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -510,8 +510,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1569302165}
-  speed: 5
+  BaseSpeed: 5
   rotationSpeed: 5
+  speed: 0
+  chargeAtPlayerCD: 0
   curHP: 0
   Damaged:
     m_PersistentCalls:
