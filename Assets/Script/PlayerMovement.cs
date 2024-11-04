@@ -9,16 +9,16 @@ using UnityEngine.Jobs;
 public class PlayerMovement : MonoBehaviour
 {
     public bool debugs = true;
-    public float baseSpeed = 10f;
+    public float baseSpeed = 5f;
     public float speed;
 
     //Dash
     private bool isDashing;
     private Vector3 dashDir;
     public float dashCooldown;
-    public float dashSpeed = 80f;
-    public float dashCooldownDur = 5f;
-    public float dashTime = 0.5f;
+    public float dashSpeed = 120f;
+    public float dashCooldownDur = 2f;
+    public float dashTime = 0.3f;
 
     Rigidbody rb;
     // Start is called before the first frame update

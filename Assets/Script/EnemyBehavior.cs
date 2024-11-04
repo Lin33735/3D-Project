@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,13 +8,17 @@ using UnityEngine.Events;
 public class EnemyBehavior : MonoBehaviour
 {
     public GameObject Player;
-    public float BaseSpeed = 5f;
+    public float BaseSpeed = 10f;
     public float rotationSpeed = 5f;
+
+    private bool chasingPlayer;
+    [SerializeField] private bool charging;
+    [SerializeField] private float actionCD;
 
     [SerializeField] private float speed;
     private float distance;
-    private float chaseDis = 30f;
-    [SerializeField]private float chargeAtPlayerCD;
+    private float chaseDis = 20f;
+    [SerializeField]private float chargeAtPlayer;
     private Vector3 direction;
     private Vector3 playerPosition;
     private Quaternion targetRotation;
@@ -37,7 +42,6 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
         distance = Vector3.Distance(transform.position, Player.transform.position);
-
     }
 
     void FixedUpdate()
@@ -47,23 +51,29 @@ public class EnemyBehavior : MonoBehaviour
             Die();
         }
 
-        if (distance < chaseDis)
+        if (distance < chaseDis && actionCD <= 0 && charging == false)
         {
             speed = BaseSpeed;
-            chargeAtPlayerCD = 0f;
+            chargeAtPlayer = 0f;
 
             MoveTowardsPlayer();
+            chasingPlayer = true;
         }
         else
         {
-            chargeAtPlayerCD++;
-        } 
+            chasingPlayer = false;
+        }
 
-        if (chargeAtPlayerCD > 50f)
+        if (!chasingPlayer)
+        {
+            chargeAtPlayer ++ ;
+        }
+
+        if (chargeAtPlayer > 50f)
         {
             Charge();
         }
-        if (chargeAtPlayerCD == 50f)
+        if (chargeAtPlayer == 49f)
         {
             GetPlayerPos();
         }
@@ -106,16 +116,31 @@ public class EnemyBehavior : MonoBehaviour
 
     void Charge()
     {
-        speed = 25f;
+        speed = 120f;
 
         Vector3 playerPositionXZ = new Vector3 (playerPosition.x, (this).transform.position.y, playerPosition.z);
 
         transform.position = Vector3.MoveTowards(this.transform.position, playerPositionXZ, speed * Time.deltaTime);
         Debug.Log("charging");
+
+        charging = true;
+
+        if (playerPositionXZ == this.transform.position)
+        {
+            charging = false;
+        }
     }
 
     void GetPlayerPos()
     {
         playerPosition = Player.transform.position;
+
+        direction = Player.transform.position - transform.position;
+        direction.Normalize();
+
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        targetRotation = Quaternion.Euler(0, angle, 0);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 }
