@@ -15,10 +15,10 @@ public class PlayerMovement : MonoBehaviour
     //Dash
     private bool isDashing;
     private Vector3 dashDir;
-    public float dashCooldown;
-    public float dashSpeed = 120f;
-    public float dashCooldownDur = 2f;
-    public float dashTime = 0.3f;
+    private float dashCooldown;
+    private float dashSpeed = 100f;
+    private float dashCooldownDur = 5f;
+    private float dashTime = 0.1f;
 
     Rigidbody rb;
     // Start is called before the first frame update
@@ -83,6 +83,10 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Stopped Dashing");
         isDashing = false;
         dashCooldown = dashCooldownDur;
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }

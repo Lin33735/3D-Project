@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class EnemyBehavior : MonoBehaviour
 {
     public GameObject Player;
-    public float BaseSpeed = 10f;
+    public float BaseSpeed = 11f;
     public float rotationSpeed = 5f;
 
     private bool chasingPlayer;
@@ -17,7 +17,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField] private float speed;
     private float distance;
-    private float chaseDis = 20f;
+    private float chaseDis = 15f;
     [SerializeField]private float chargeAtPlayer;
     private Vector3 direction;
     private Vector3 playerPosition;
@@ -116,12 +116,11 @@ public class EnemyBehavior : MonoBehaviour
 
     void Charge()
     {
-        speed = 120f;
+        speed = 115f;
 
         Vector3 playerPositionXZ = new Vector3 (playerPosition.x, (this).transform.position.y, playerPosition.z);
 
         transform.position = Vector3.MoveTowards(this.transform.position, playerPositionXZ, speed * Time.deltaTime);
-        Debug.Log("charging");
 
         charging = true;
 
