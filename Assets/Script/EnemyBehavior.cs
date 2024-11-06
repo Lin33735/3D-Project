@@ -42,6 +42,11 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
         distance = Vector3.Distance(transform.position, Player.transform.position);
+       
+        if (curHP <= 0)
+        {
+            Die();
+        }
     }
 
     void FixedUpdate()

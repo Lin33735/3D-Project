@@ -8,6 +8,7 @@ using UnityEngine.Jobs;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     public bool debugs = true;
     public float baseSpeed = 5f;
     public float speed;
@@ -83,10 +84,5 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Stopped Dashing");
         isDashing = false;
         dashCooldown = dashCooldownDur;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        
     }
 }
