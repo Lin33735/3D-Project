@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHitbox : MonoBehaviour
 {
@@ -23,5 +24,6 @@ public class PlayerHitbox : MonoBehaviour
     private void PlayerDead()
     {
         Player.gameObject.SetActive(false);
+        SceneManager.LoadScene("SampleScene");
     }
 }

@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public bool debugs = true;
     Vector3 myLook;
-    float lookSpeed = 200f;
+    float lookSpeed = 100f;
     public Camera myCam;
     public float camLock = 90f;
     float onStartTimer;

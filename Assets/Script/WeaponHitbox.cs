@@ -18,7 +18,7 @@ public class WeaponHitbox : MonoBehaviour
     {
         if (collision.TryGetComponent<EnemyBehavior>(out var curHP))
         {
-            curHP.Damage(damage:50);
+            curHP.Damage(damage:20);
             Debug.Log("Enemy Hit");
         }
     }

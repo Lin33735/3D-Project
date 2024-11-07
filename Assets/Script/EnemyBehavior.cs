@@ -22,16 +22,19 @@ public class EnemyBehavior : MonoBehaviour
     private Vector3 direction;
     private Vector3 playerPosition;
     private Quaternion targetRotation;
-
+    Material mymaterial;
+    Color mycolor;
     private int maxHP = 100;
     public int curHP;
-
+    float hittimmer;
     public UnityEvent<int> Damaged;
 
     private void Awake()
     {
         curHP = maxHP;
         speed = BaseSpeed;
+        mymaterial = GetComponent<Renderer>().material;
+        mycolor = mymaterial.color;
     }
 
     void Start()
@@ -51,6 +54,15 @@ public class EnemyBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (hittimmer > 0)
+        {
+            hittimmer -= Time.fixedDeltaTime;
+            mymaterial.color = Color.white;
+            if (hittimmer <= 0)
+            {
+                mymaterial.color = mycolor;
+            }
+        }
         if (curHP <= 0)
         {
             Die();
@@ -112,6 +124,7 @@ public class EnemyBehavior : MonoBehaviour
     public void Damage(int damage)
     {
         curHP -= damage;
+        hittimmer = 0.2f;
     }
 
     void Die()
